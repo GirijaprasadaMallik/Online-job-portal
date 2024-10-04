@@ -20,6 +20,7 @@ public class Jobs {
 		this.status = status;
 		this.location = location;
 		this.pdate = pdate;
+		this.pdate = date;
 	}
 	public int getId() {
 		return id;
