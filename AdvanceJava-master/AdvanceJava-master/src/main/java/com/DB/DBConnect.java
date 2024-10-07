@@ -16,7 +16,7 @@ public class DBConnect {
 			e.printStackTrace();
 		}
 		
-		system.out.print('*');
+		
 		return conn;
 	}
 
