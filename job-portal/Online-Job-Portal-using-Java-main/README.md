@@ -29,6 +29,35 @@ CREATE TABLE user (
     role VARCHAR(50) NOT NULL
 );
 
+
+-- Create the user (if it doesn't exist)
+CREATE USER 'admin@gmail.com'@'localhost' IDENTIFIED BY 'admin';
+
+-- Grant privileges on the job_portal database
+GRANT ALL PRIVILEGES ON job_portal.* TO 'admin@gmail.com'@'localhost';
+
+-- Flush privileges to ensure that the changes take effect
+FLUSH PRIVILEGES;
+
+CREATE TABLE jobs (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    description TEXT,
+    category VARCHAR(100),
+    status VARCHAR(50),
+    location VARCHAR(255),
+    pdate TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE user (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    qualification VARCHAR(15) NOT NULL,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    role VARCHAR(50) NOT NULL
+);
+
 CREATE TABLE job_applications (
     id INT AUTO_INCREMENT PRIMARY KEY,
     job_id INT,
@@ -43,12 +72,5 @@ CREATE TABLE job_applications (
     FOREIGN KEY (job_id) REFERENCES jobs(id),
     FOREIGN KEY (user_id) REFERENCES user(id)
 );
-//
--- Create the user (if it doesn't exist)
-CREATE USER 'admin@gmail.com'@'localhost' IDENTIFIED BY 'admin';
 
--- Grant privileges on the job_portal database
-GRANT ALL PRIVILEGES ON job_portal.* TO 'admin@gmail.com'@'localhost';
 
--- Flush privileges to ensure that the changes take effect
-FLUSH PRIVILEGES;
