@@ -29,7 +29,21 @@ CREATE TABLE user (
     role VARCHAR(50) NOT NULL
 );
 
-
+CREATE TABLE job_applications (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    job_id INT,
+    user_id INT,
+    application_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    status VARCHAR(50) DEFAULT 'Pending',
+    comments TEXT,
+    user_name VARCHAR(255),
+    user_email VARCHAR(255),
+    job_title VARCHAR(255),
+    qualification VARCHAR(255),
+    FOREIGN KEY (job_id) REFERENCES jobs(id),
+    FOREIGN KEY (user_id) REFERENCES user(id)
+);
+//
 -- Create the user (if it doesn't exist)
 CREATE USER 'admin@gmail.com'@'localhost' IDENTIFIED BY 'admin';
 
