@@ -125,10 +125,10 @@ public class JobDAO {
         List<Jobs> list = new ArrayList<Jobs>();
         Jobs j = null;
         try {
-            String sql = "select * from jobs where category=? or location=? order by id DESC";
+            String sql = "select * from jobs where category LIKE ? or location LIKE ? order by id DESC";
             PreparedStatement ps = conn.prepareStatement(sql);
-            ps.setString(1, category);
-            ps.setString(2, location);
+            ps.setString(1, "%" + category + "%");
+            ps.setString(2, "%" + location + "%");
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 j = new Jobs();
@@ -136,9 +136,9 @@ public class JobDAO {
                 j.setTitle(rs.getString(2));
                 j.setDescription(rs.getString(3));
                 j.setCategory(rs.getString(4));
-                j.setLocation(rs.getString(5));
-                j.setStatus(rs.getString(6));
-                j.setPdate(rs.getString(7));
+                j.setStatus(rs.getString(5));
+                j.setLocation(rs.getString(6));
+                j.setPdate(rs.getTimestamp(7) + "");
                 list.add(j);
             }
         } catch (Exception e) {
@@ -151,10 +151,10 @@ public class JobDAO {
         List<Jobs> list = new ArrayList<Jobs>();
         Jobs j = null;
         try {
-            String sql = "select * from jobs where category=? and location=? order by id DESC";
+            String sql = "select * from jobs where category LIKE ? and location LIKE ? order by id DESC";
             PreparedStatement ps = conn.prepareStatement(sql);
-            ps.setString(1, category);
-            ps.setString(2, location);
+            ps.setString(1, "%" + category + "%");
+            ps.setString(2, "%" + location + "%");
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 j = new Jobs();
@@ -162,9 +162,156 @@ public class JobDAO {
                 j.setTitle(rs.getString(2));
                 j.setDescription(rs.getString(3));
                 j.setCategory(rs.getString(4));
-                j.setLocation(rs.getString(5));
-                j.setStatus(rs.getString(6));
-                j.setPdate(rs.getString(7));
+                j.setStatus(rs.getString(5));
+                j.setLocation(rs.getString(6));
+                j.setPdate(rs.getTimestamp(7) + "");
+                list.add(j);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    // Get jobs by location
+    public List<Jobs> getJobsByLocation(String location) {
+        List<Jobs> list = new ArrayList<Jobs>();
+        Jobs j = null;
+        try {
+            String sql = "select * from jobs where location LIKE ? order by id DESC";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, "%" + location + "%");
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                j = new Jobs();
+                j.setId(rs.getInt(1));
+                j.setTitle(rs.getString(2));
+                j.setDescription(rs.getString(3));
+                j.setCategory(rs.getString(4));
+                j.setStatus(rs.getString(5));
+                j.setLocation(rs.getString(6));
+                j.setPdate(rs.getTimestamp(7) + "");
+                list.add(j);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    // Get jobs by category
+    public List<Jobs> getJobsByCategory(String category) {
+        List<Jobs> list = new ArrayList<Jobs>();
+        Jobs j = null;
+        try {
+            String sql = "select * from jobs where category LIKE ? order by id DESC";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, "%" + category + "%");
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                j = new Jobs();
+                j.setId(rs.getInt(1));
+                j.setTitle(rs.getString(2));
+                j.setDescription(rs.getString(3));
+                j.setCategory(rs.getString(4));
+                j.setStatus(rs.getString(5));
+                j.setLocation(rs.getString(6));
+                j.setPdate(rs.getTimestamp(7) + "");
+                list.add(j);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    // Get active jobs
+    public List<Jobs> getActiveJobs() {
+        List<Jobs> list = new ArrayList<Jobs>();
+        Jobs j = null;
+        try {
+            String sql = "select * from jobs where status=? order by id DESC";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, "Active");
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                j = new Jobs();
+                j.setId(rs.getInt(1));
+                j.setTitle(rs.getString(2));
+                j.setDescription(rs.getString(3));
+                j.setCategory(rs.getString(4));
+                j.setStatus(rs.getString(5));
+                j.setLocation(rs.getString(6));
+                j.setPdate(rs.getTimestamp(7) + "");
+                list.add(j);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    // Get jobs posted in last n days
+    public List<Jobs> getRecentJobs(int days) {
+        List<Jobs> list = new ArrayList<Jobs>();
+        Jobs j = null;
+        try {
+            String sql = "select * from jobs where pdate >= DATE_SUB(NOW(), INTERVAL ? DAY) order by id DESC";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, days);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                j = new Jobs();
+                j.setId(rs.getInt(1));
+                j.setTitle(rs.getString(2));
+                j.setDescription(rs.getString(3));
+                j.setCategory(rs.getString(4));
+                j.setStatus(rs.getString(5));
+                j.setLocation(rs.getString(6));
+                j.setPdate(rs.getTimestamp(7) + "");
+                list.add(j);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    // Count total jobs
+    public int getTotalJobs() {
+        int total = 0;
+        try {
+            String sql = "select count(*) from jobs";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                total = rs.getInt(1);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return total;
+    }
+
+    // Get jobs with pagination
+    public List<Jobs> getJobsWithPagination(int start, int total) {
+        List<Jobs> list = new ArrayList<Jobs>();
+        Jobs j = null;
+        try {
+            String sql = "select * from jobs order by id DESC limit ?,?";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, start-1);
+            ps.setInt(2, total);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                j = new Jobs();
+                j.setId(rs.getInt(1));
+                j.setTitle(rs.getString(2));
+                j.setDescription(rs.getString(3));
+                j.setCategory(rs.getString(4));
+                j.setStatus(rs.getString(5));
+                j.setLocation(rs.getString(6));
+                j.setPdate(rs.getTimestamp(7) + "");
                 list.add(j);
             }
         } catch (Exception e) {
