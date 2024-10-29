@@ -1,6 +1,6 @@
 .navbar .nav-item .nav-link {
 	font-size: 20px;
-	color: white;
+	color: rgb(0, 128, 255);
 }
 
 .navbar .nav-item:hover .nav-link {

@@ -45,14 +45,14 @@
 							<div class="form-group mb-3">
 								<label>Qualification</label> <input required="required" placeholder="Qualification"
 									type="text" class="form-control" id="exampleInputEmail1"
-									aria-describedby="emailHelp" name="qualification" value="${userobj.password }">
+									aria-describedby="emailHelp" name="qualification" value="${userobj.qualification }">
 							</div>
 
 							<div class="form-group mb-3">
 								<label>Email</label> <input type="text" placeholder="Email"
 									required="required" class="form-control"
 									id="exampleInputEmail1" aria-describedby="emailHelp"
-									name="qualification" value="${userobj.qualification}">
+									name="qualification" value="${userobj.email}">
 							</div>
 
 							<div class="form-group mb-3">
