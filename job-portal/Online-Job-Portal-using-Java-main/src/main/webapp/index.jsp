@@ -38,7 +38,7 @@
 	</div>
 	<img class="footerImg" alt="" src="img/img1.png">
 	<img class="footerImg" alt="" src="img/img2.png">
-	<img class="footerImg" alt="" src="img/footer.jpg">
+	
 	<!-- Features -->
 
 	<!-- <section class="white-section" id="features">
@@ -69,7 +69,7 @@
 
 	
 	
-	<%-- <%@include file="all_component/footer.jsp"%> --%>
+	<%@include file="all_component/footer.jsp"%>
 </body>
 
 </html>

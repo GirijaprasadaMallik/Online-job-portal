@@ -75,3 +75,4 @@ CREATE TABLE job_applications (
 
 //updated
 //updated for comment
+//updatered the footer part
