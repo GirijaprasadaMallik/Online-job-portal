@@ -73,4 +73,4 @@ CREATE TABLE job_applications (
     FOREIGN KEY (user_id) REFERENCES user(id)
 );
 
-//here designing the footer
+//update admin,home page

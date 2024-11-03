@@ -76,3 +76,4 @@ CREATE TABLE job_applications (
 //updated
 //updated for comment
 //updatered the footer part
+//updated Admin module & changing the home page

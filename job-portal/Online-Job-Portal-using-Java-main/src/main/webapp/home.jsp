@@ -1,15 +1,13 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page isELIgnored="false"%>
 <%@ page import="com.dao.JobDAO"%>
 <%@ page import="com.DB.DBConnect"%>
 <%@ page import="com.entity.Jobs"%>
-<%@ page import="com.entity.User"%>
 <%@ page import="java.util.List"%>
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="ISO-8859-1">
     <title>User : Home</title>
@@ -41,16 +39,33 @@
             font-size: 12px;
             margin-right: 5px;
         }
+        .card-img-top {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+        
+        @media (max-width: 768px) {
+            .card-img-top {
+                height: 150px;
+            }
+            .job-card {
+                margin-bottom: 15px;
+            }
+            .search-section {
+                padding: 15px;
+            }
+        }
     </style>
 </head>
 <body style="background-color: #f0f1f2;">
 
     <%@include file="all_component/navbar.jsp"%>
-   
+
     <div class="container mt-4">
         <!-- Alert Messages -->
         <c:if test="${not empty succMsg}">
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <div class="alert alert-success alert-dismissible fade show" role="alert" aria-live="assertive">
                 ${succMsg}
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
@@ -64,15 +79,15 @@
             <form class="form-row" action="home.jsp" method="GET">
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label>Location</label>
-                        <input type="text" class="form-control" name="location" 
-                               placeholder="Enter location..." value="${param.location}">
+                        <label for="location">Location</label>
+                        <input type="text" class="form-control" id="location" name="location" 
+                               placeholder="Enter location..." value="${param.location}" aria-label="Job Location">
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label>Category</label>
-                        <select class="form-control" name="category">
+                        <label for="category">Category</label>
+                        <select class="form-control" id="category" name="category" aria-label="Job Category">
                             <option value="">Select Category</option>
                             <option value="IT" ${param.category == 'IT' ? 'selected' : ''}>IT</option>
                             <option value="Developer" ${param.category == 'Developer' ? 'selected' : ''}>Developer</option>
@@ -120,9 +135,7 @@
                         <div class="text-center job-icon">
                             <i class="far fa-clipboard fa-2x"></i>
                         </div>
-                        
                         <h5 class="card-title text-center mb-3"><%=j.getTitle()%></h5>
-                        
                         <div class="mb-3">
                             <span class="badge badge-primary badge-custom">
                                 <i class="fas fa-map-marker-alt"></i> <%=j.getLocation()%>
@@ -134,24 +147,18 @@
                                 <i class="fas fa-clock"></i> <%=j.getStatus()%>
                             </span>
                         </div>
-                        
                         <p class="card-text text-muted">
                             <%=j.getDescription().length() > 150 ? j.getDescription().substring(0, 150) + "..." : j.getDescription()%>
                         </p>
-                        
                         <div class="text-muted small mb-3">
                             <i class="fas fa-calendar-alt"></i> Posted: <%=j.getPdate()%>
                         </div>
-                        
                         <div class="text-center">
-                            <a href="one_view.jsp?id=<%=j.getId()%>"
-                                class="btn btn-outline-success btn-sm mr-2">
+                            <a href="one_view.jsp?id=<%=j.getId()%>" class="btn btn-outline-success btn-sm mr-2">
                                 <i class="fas fa-info-circle"></i> View Details
                             </a>
-                                
                             <c:if test="${not empty userobj}">
-                                <a href="apply_job.jsp?id=<%=j.getId()%>" 
-                                    class="btn btn-primary btn-sm">
+                                <a href="apply_job.jsp?id=<%=j.getId()%>" class="btn btn-primary btn-sm apply-btn">
                                     <i class="fas fa-paper-plane"></i> Apply Now
                                 </a>
                             </c:if>
@@ -184,25 +191,6 @@
             }, 5000);
         });
 
-        // Enable tooltips
-        $(function () {
-            $('[data-toggle="tooltip"]').tooltip();
-        });
-
-        // Preserve search form values after submission
-        $(document).ready(function() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const category = urlParams.get('category');
-            const location = urlParams.get('location');
-            
-            if(category) {
-                $('#category').val(category);
-            }
-            if(location) {
-                $('#location').val(location);
-            }
-        });
-
         // Smooth scroll to top
         $('.scroll-to-top').click(function(e) {
             e.preventDefault();
@@ -215,34 +203,8 @@
                 e.preventDefault();
             }
         });
-    </script>
 
-    <!-- Scroll to Top Button -->
-    <a href="#" class="scroll-to-top" style="display: none; position: fixed; bottom: 20px; right: 20px; 
-        background: #007bff; color: white; padding: 10px 15px; border-radius: 5px; text-decoration: none;">
-        <i class="fas fa-arrow-up"></i>
-    </a>
-
-    <!-- Show/Hide Scroll to Top Button -->
-    <script>
-        $(window).scroll(function() {
-            if ($(this).scrollTop() > 100) {
-                $('.scroll-to-top').fadeIn();
-            } else {
-                $('.scroll-to-top').fadeOut();
-            }
-        });
-    </script>
-
-    <!-- Loading Spinner -->
-    <div id="loading-spinner" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);">
-        <div class="spinner-border text-primary" role="status">
-            <span class="sr-only">Loading...</span>
-        </div>
-    </div>
-
-    <!-- Show loading spinner during AJAX requests -->
-    <script>
+        // Show loading spinner during AJAX requests
         $(document).ajaxStart(function() {
             $('#loading-spinner').show();
         }).ajaxStop(function() {
@@ -250,47 +212,10 @@
         });
     </script>
 
-    <!-- Error handling -->
-    <script>
-        window.onerror = function(msg, url, lineNo, columnNo, error) {
-            console.error('Error: ' + msg + '\nURL: ' + url + '\nLine: ' + lineNo + '\nColumn: ' + columnNo + '\nError object: ' + JSON.stringify(error));
-            return false;
-        };
-    </script>
-
-    <!-- Add to favorites functionality -->
-    <script>
-        $('.favorite-btn').click(function(e) {
-            e.preventDefault();
-            const jobId = $(this).data('job-id');
-            // Add your favorite functionality here
-            $(this).toggleClass('active');
-            // You would typically make an AJAX call to your server here
-        });
-    </script>
-
-    <!-- Responsive image handling -->
-    <style>
-        .card-img-top {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-        }
-        
-        @media (max-width: 768px) {
-            .card-img-top {
-                height: 150px;
-            }
-            
-            .job-card {
-                margin-bottom: 15px;
-            }
-            
-            .search-section {
-                padding: 15px;
-            }
-        }
-    </style>
+    <!-- Scroll-to-top button -->
+    <a href="#" class="scroll-to-top position-fixed btn btn-secondary" style="bottom: 20px; right: 20px;">
+        <i class="fas fa-arrow-up"></i>
+    </a>
 
 </body>
 </html>
