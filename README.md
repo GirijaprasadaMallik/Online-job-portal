@@ -50,13 +50,18 @@ CREATE TABLE jobs (
 );
 
 CREATE TABLE user (
-    id INT AUTO_INCREMENT PRIMARY KEY,
+    id INT NOT NULL AUTO_INCREMENT,
     name VARCHAR(255) NOT NULL,
     qualification VARCHAR(15) NOT NULL,
     email VARCHAR(255) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
-    role VARCHAR(50) NOT NULL
+    role VARCHAR(50) NOT NULL,
+    is_active TINYINT(1) DEFAULT 1,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    last_login TIMESTAMP NULL,
+    PRIMARY KEY (id)
 );
+
 
 CREATE TABLE job_applications (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -73,7 +78,4 @@ CREATE TABLE job_applications (
     FOREIGN KEY (user_id) REFERENCES user(id)
 );
 
-//updated
-//updated for comment
-//updatered the footer part
-//updated Admin module & changing the home page
+//update admin,home page
